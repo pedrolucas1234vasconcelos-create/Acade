@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clube Piscina — Reservas</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f9fc;color:#123}
+header{background:linear-gradient(135deg,#0077b6,#00b4d8);color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.logo{font-size:24px;font-weight:800}.btn{border:0;border-radius:12px;padding:11px 16px;background:#0077b6;color:#fff;font-weight:700;cursor:pointer}
+header .btn{background:white;color:#0077b6}
+.hero{padding:55px 6%;text-align:center;background:linear-gradient(180deg,#dff8ff,#f4f9fc)}
+.hero h1{font-size:42px;margin:10px}.hero p{font-size:18px}
+.container{max-width:1200px;margin:auto;padding:30px 5%}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px}
+.card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 5px 20px #0001}
+.card img{width:100%;height:190px;object-fit:cover}.content{padding:18px}.price{font-size:24px;color:#0077b6;font-weight:800}.tag{display:inline-block;background:#e1f7ff;color:#0077b6;padding:5px 9px;border-radius:20px;font-size:12px;margin-bottom:8px}
+.modal{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;padding:20px;z-index:30}
+.box{background:#fff;width:min(500px,100%);max-height:90vh;overflow:auto;border-radius:20px;padding:25px;position:relative}
+.close{position:absolute;right:18px;top:14px;border:0;background:none;font-size:25px;cursor:pointer}
+input,select{width:100%;padding:13px;margin:7px 0 13px;border:1px solid #ccd8df;border-radius:10px}
+footer{text-align:center;padding:30px;background:#063b52;color:white;margin-top:40px}
+.notice{font-size:12px;color:#667;margin-top:12px}
+.success{background:#e6fff0;color:#087a3d;padding:12px;border-radius:10px;display:none}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">🏊 Clube Piscina</div>
+<button class="btn" onclick="openModal('login')">Entrar</button>
+</header>
+
+<section class="hero">
+<h1>Seu dia perfeito começa na piscina ☀️</h1>
+<p>Encontre clubes e piscinas incríveis para reservar por diária.</p>
+<button class="btn" onclick="document.getElementById('clubes').scrollIntoView()">Ver piscinas</button>
+</section>
+
+<main class="container" id="clubes">
+<h2>Clubes disponíveis</h2>
+<div class="grid" id="cards"></div>
+</main>
+
+<footer>© 2026 Clube Piscina — Plataforma de reservas</footer>
+
+<div class="modal" id="modal">
+<div class="box">
+<button class="close" onclick="closeModal()">×</button>
+<div id="modalContent"></div>
+</div>
+</div>
+
+<script>
+const piscinas=[
+["Piscina Azul Premium","https://images.unsplash.com/photo-1560089000-7433a4ebbd64?auto=format&fit=crop&w=900&q=80","R$ 120,00","Piscina privativa • Churrasqueira"],
+["Clube Tropical","https://images.unsplash.com/photo-1572331165267-854da2b10ccc?auto=format&fit=crop&w=900&q=80","R$ 90,00","Área de lazer • Vestiário"],
+["Resort Sol & Água","https://images.unsplash.com/photo-1602002418082-a4443e081dd1?auto=format&fit=crop&w=900&q=80","R$ 180,00","Piscina grande • Espaço família"],
+["Clube Paraíso","https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=900&q=80","R$ 150,00","Piscina • Área infantil"],
+["Piscina Cristal","https://images.unsplash.com/photo-1600965962361-9035dbfd1c50?auto=format&fit=crop&w=900&q=80","R$ 110,00","Piscina aquecida • Deck"],
+["Clube Verão","https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=900&q=80","R$ 75,00","Piscina • Quadra • Jardim"]
+];
+
+const cards=document.getElementById("cards");
+piscinas.forEach((p,i)=>{
+cards.innerHTML+=`<article class="card">
+<img src="${p[1]}" alt="${p[0]}">
+<div class="content"><span class="tag">Disponível</span><h3>${p[0]}</h3>
+<p>${p[3]}</p><div class="price">${p[2]} <small>/ diária</small></div>
+<br><button class="btn" onclick="reservar(${i})">Reservar agora</button></div></article>`;
+});
+
+function openModal(type,idx){
+document.getElementById("modal").style.display="flex";
+if(type==="login") document.getElementById("modalContent").innerHTML=`
+<h2>Entrar na sua conta</h2>
+<label>E-mail</label><input id="email" type="email" placeholder="seu@email.com">
+<label>Senha</label><input id="senha" type="password" placeholder="Sua senha">
+<button class="btn" style="width:100%" onclick="login()">Entrar</button>
+<p style="text-align:center">Ainda não tem conta? <button class="btn" onclick="cadastro()">Criar cadastro</button></p>`;
+}
+function closeModal(){document.getElementById("modal").style.display="none"}
+function login(){
+const e=document.getElementById("email").value;
+if(!e)return alert("Digite seu e-mail.");
+alert("Login local realizado. Para login real, é necessário conectar um servidor seguro.");
+closeModal();
+}
+function cadastro(){
+document.getElementById("modalContent").innerHTML=`
+<h2>Criar cadastro</h2>
+<label>Nome completo</label><input placeholder="Seu nome">
+<label>E-mail</label><input type="email" placeholder="seu@email.com">
+<label>CPF</label><input inputmode="numeric" placeholder="000.000.000-00" maxlength="14">
+<label>Senha</label><input type="password" placeholder="Crie uma senha">
+<button class="btn" style="width:100%" onclick="alert('Cadastro preenchido. Em produção, os dados devem ser enviados por conexão segura para um servidor.')">Criar conta</button>
+<p class="notice">Nunca compartilhe sua senha. O CPF deve ser tratado por um sistema seguro, e não armazenado neste arquivo.</p>`;
+}
+function reservar(i){
+const p=piscinas[i];
+openModal("reserve");
+document.getElementById("modalContent").innerHTML=`
+<h2>${p[0]}</h2><img src="${p[1]}" style="width:100%;height:180px;object-fit:cover;border-radius:12px">
+<p><b>${p[2]}</b> por diária</p>
+<label>Data da visita</label><input id="data" type="date">
+<label>Quantidade de pessoas</label><select id="pessoas"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select>
+<label>Nome do responsável</label><input id="nome" placeholder="Nome completo">
+<label>CPF</label><input id="cpf" inputmode="numeric" maxlength="14" placeholder="000.000.000-00">
+<button class="btn" style="width:100%" onclick="finalizar('${p[0]}','${p[2]}')">Continuar para pagamento</button>
+<p class="notice">O pagamento real precisa de um gateway de pagamento e servidor seguro. Este arquivo não processa nem armazena pagamentos.</p>`;
+}
+function finalizar(clube,preco){
+const nome=document.getElementById("nome").value;
+const data=document.getElementById("data").value;
+if(!nome||!data){alert("Preencha o nome e a data.");return}
+document.getElementById("modalContent").innerHTML=`
+<h2>Reserva criada!</h2>
+<div class="success" style="display:block">Sua solicitação para <b>${clube}</b> foi registrada neste navegador.</div>
+<p><b>Cliente:</b> ${nome}</p><p><b>Data:</b> ${data}</p><p><b>Valor:</b> ${preco}</p>
+<button class="btn" style="width:100%" onclick="closeModal()">Concluir</button>
+<p class="notice">Para cobrar de verdade, conecte esta etapa a um provedor de pagamento e a um backend. Não coloque chaves secretas no HTML.</p>`;
+}
+</script>
+</body>
+</html>
